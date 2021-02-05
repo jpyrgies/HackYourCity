@@ -1,0 +1,255 @@
+
+CREATE TABLE INDIVIDU
+(
+IndividuID int NOT NULL,
+Nom varchar(256) NOT NULL,
+Prenom varchar(20) NOT NULL,
+DateNaissance DATE,
+CodeGenre varchar(1),
+PageFB varchar(256),
+PRIMARY KEY (IndividuID)
+);
+
+CREATE TABLE POINTINTERET
+(
+PointinteretID int NOT NULL,
+Type varchar(256),
+Nom varchar(256) NOT NULL,
+PRIMARY KEY (PointinteretID)
+);
+
+CREATE TABLE INDIVIDUPOINTINTERET
+(
+IndividuPointInteretID int NOT NULL,
+IndividuID int NOT NULL,
+PointinteretID int NOT NULL,
+CodeFonction varchar(1),
+PRIMARY KEY (IndividuPointInteretID),
+FOREIGN KEY (IndividuID) REFERENCES INDIVIDU(IndividuID),
+FOREIGN KEY (PointinteretID) REFERENCES POINTINTERET(PointinteretID)  
+);
+
+
+CREATE TABLE EVENEMENT
+(
+EvenementID int NOT NULL,
+Type varchar(256),
+Theme varchar(256),
+Recurrent BOOLEAN,
+Nom varchar(256) NOT NULL,
+Description varchar(1024),
+Occurrence varchar(256),
+PublicCible varchar(256),
+Duree varchar(256),
+URL varchar(256),
+Unites int,
+ModeCom varchar(256),
+Remarque varchar(256),
+PRIMARY KEY (EvenementID)
+);
+
+CREATE TABLE INDIVIDUEVENEMENT
+(
+IndividuEvenementtID int NOT NULL,
+IndividuID int NOT NULL,
+EvenementID int NOT NULL,
+PRIMARY KEY (IndividuEvenementtID),
+FOREIGN KEY (IndividuID) REFERENCES INDIVIDU(IndividuID),
+FOREIGN KEY (EvenementID) REFERENCES EVENEMENT(EvenementID)  
+);
+
+CREATE TABLE JOURHEURES
+(
+JourHeuresID int NOT NULL,
+EvenementID int NOT NULL,
+HeureDebut varchar(5),
+HeureFin varchar(5),
+PRIMARY KEY (JourHeuresID),
+FOREIGN KEY (EvenementID) REFERENCES EVENEMENT(EvenementID)
+);
+
+CREATE TABLE EMAILINDIVIDU
+(
+EmailIndividuID int NOT NULL,
+IndividuID int NOT NULL,
+CodeTypeeMail varchar(1),
+eMail varchar(256),
+PRIMARY KEY (EmailIndividuID),
+FOREIGN KEY (IndividuID) REFERENCES INDIVIDU(IndividuID)
+);
+
+CREATE TABLE TELEPHONEINDIVIDU
+(
+TelephoneIndividuID int NOT NULL,
+IndividuID int NOT NULL,
+CodeTypeTel varchar(1),
+CodePays varchar(3),
+Prefixe varchar(6),
+Numero varchar(12),
+PRIMARY KEY (TelephoneIndividuID),
+FOREIGN KEY (IndividuID) REFERENCES INDIVIDU(IndividuID)
+);
+
+CREATE TABLE ORGANISATION
+(
+OrganisationID int NOT NULL,
+Type varchar(256),
+Nom varchar(256) NOT NULL,
+WebURL varchar(256),
+PageFB varchar(256),
+PRIMARY KEY (OrganisationID)
+);
+
+
+CREATE TABLE TELEPHONEORGANISATION
+(
+TelephoneIndividuID int NOT NULL,
+OrganisationID int NOT NULL,
+CodeTypeTel varchar(1),
+CodePays varchar(3),
+Prefixe varchar(6),
+Numero varchar(12),
+PRIMARY KEY (TelephoneIndividuID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID)
+);
+
+CREATE TABLE ORGANISATIONEVENEMENT
+(
+OrganisationEvenementtID int NOT NULL,
+OrganisationID int NOT NULL,
+EvenementID int NOT NULL,
+PRIMARY KEY (OrganisationEvenementtID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID),
+FOREIGN KEY (EvenementID) REFERENCES EVENEMENT(EvenementID) 
+);
+
+
+CREATE TABLE ADRESSEPOSTALE
+(
+AdressePostaleID int NOT NULL,
+IDBeSt varchar(256),
+Rue varchar(256),
+Numero varchar(12),
+Boite varchar(12),
+CodePostal varchar(12),
+ZoneAdresse varchar(256),
+Commune varchar(256),
+CodePays varchar(3),
+PRIMARY KEY (AdressePostaleID)
+);
+
+CREATE TABLE INDIVIDUADRESSEPOSTALE
+(
+IndividuAdressePostaleID int NOT NULL,
+IndividuID int NOT NULL,
+AdressePostaleID int NOT NULL,
+CodeTypeAdr varchar(1),
+PRIMARY KEY (IndividuAdressePostaleID),
+FOREIGN KEY (IndividuID) REFERENCES INDIVIDU(IndividuID),
+FOREIGN KEY (AdressePostaleID) REFERENCES ADRESSEPOSTALE(AdressePostaleID)
+);
+
+CREATE TABLE ORGANISATIONADRESSEPOSTALE
+(
+OrganisationAdressePostaleID int NOT NULL,
+OrganisationID int NOT NULL,
+AdressePostaleID int NOT NULL,
+CodeTypeAdr varchar(1),
+PRIMARY KEY (OrganisationAdressePostaleID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID),
+FOREIGN KEY (AdressePostaleID) REFERENCES ADRESSEPOSTALE(AdressePostaleID)
+);
+
+CREATE TABLE HORAIREOUVERTURE
+(
+HoraireOuvertureID int NOT NULL,
+OrganisationID int NOT NULL,
+JourSemaine varchar(256),
+HeureDebut varchar(5),
+HeureFin varchar(5),
+PRIMARY KEY (HoraireOuvertureID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID)
+);
+
+CREATE TABLE EVENEMENTADRESSEPOSTALE
+(
+EvenementAdressePostaleID int NOT NULL,
+EvenementID int NOT NULL,
+AdressePostaleID int NOT NULL,
+CodeTypeAdr varchar(1),
+PRIMARY KEY (EvenementAdressePostaleID),
+FOREIGN KEY (EvenementID) REFERENCES EVENEMENT(EvenementID),
+FOREIGN KEY (AdressePostaleID) REFERENCES ADRESSEPOSTALE(AdressePostaleID)
+);
+
+CREATE TABLE INDIVIDUORGANISATION
+(
+IndividuOrganisationID int NOT NULL,
+IndividuID int NOT NULL,
+OrganisationID int NOT NULL,
+CodeFonction varchar(1),
+PRIMARY KEY (IndividuOrganisationID),
+FOREIGN KEY (IndividuID) REFERENCES INDIVIDU(IndividuID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID)  
+);
+
+CREATE TABLE EMAILORGANISATION
+(
+EmailOrganisationID int NOT NULL,
+OrganisationID int NOT NULL,
+CodeTypeeMail varchar(1),
+eMail varchar(256),
+PRIMARY KEY (EmailOrganisationID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID)
+);
+
+CREATE TABLE ORGANISATIONPOINTINTERET
+(
+OrganisationPointInteretID int NOT NULL,
+OrganisationID int NOT NULL,
+PointinteretID int NOT NULL,
+CodeFonction varchar(1),
+PRIMARY KEY (OrganisationPointInteretID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID),
+FOREIGN KEY (PointinteretID) REFERENCES POINTINTERET(PointinteretID)  
+);
+
+CREATE TABLE PROJET
+(
+ProjetID int NOT NULL,
+Type varchar(256),
+Nom varchar(256) NOT NULL,
+Description varchar(1024),
+Phase varchar(256),
+PublicCible varchar(256),
+PRIMARY KEY (ProjetID)
+);
+
+CREATE TABLE ORGANISATIONPROJET
+(
+OrganisationProjetID int NOT NULL,
+OrganisationID int NOT NULL,
+ProjetID int NOT NULL,
+PRIMARY KEY (OrganisationProjetID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION(OrganisationID),
+FOREIGN KEY (ProjetID) REFERENCES PROJET(ProjetID)  
+);
+
+CREATE TABLE PRODUIT
+(
+ProduitID int NOT NULL,
+OrganisationID int NOT NULL,
+CodeProduit varchar(256),
+Categorie varchar(256),
+Nom varchar(256) NOT NULL,
+Recup BOOLEAN,
+Vrac BOOLEAN,
+SecondeMain BOOLEAN,
+DoItYourself BOOLEAN,
+PRIMARY KEY (ProduitID),
+FOREIGN KEY (OrganisationID) REFERENCES ORGANISATION (OrganisationID)
+);
+
+
+
+
